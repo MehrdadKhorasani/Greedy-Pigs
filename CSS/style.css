@@ -42,5 +42,31 @@ body {
 .container {
   width: var(--container-width);
   border: 0.3rem dashed var(--color-dos-1);
-  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 50vh;
+}
+
+.player {
+  border-right: 0.3rem dashed var(--color-dos-1);
+}
+
+.overall {
+  display: flex;
+  align-items: center;
+}
+
+.name,
+.score {
+  font-size: 1.8rem;
+}
+
+.current {
+  display: flex;
+  align-items: center;
+}
+
+.current-label,
+.current-score {
+  font-size: 1.4rem;
 }

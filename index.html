@@ -7,17 +7,102 @@
     <link rel="stylesheet" href="CSS/style.css" />
   </head>
   <body>
-    <main class="container">
-      <section class="player">
-        <div class="overall">
-          <h2 class="name">Player:</h2>
-          <p class="score">0</p>
+    <main>
+      <div class="start-menu">
+        <h1 class="start-menu__h1">GREEDY PIGS</h1>
+        <div class="start-menu__btn start-menu__start" onclick="gameGo()">
+          Start Game
         </div>
-        <div class="current">
-          <p class="current-label">Current:</p>
-          <p class="current-score">0</p>
+        <div
+          class="start-menu__btn start-menu__instruction"
+          onclick="instructionGO()"
+        >
+          Instruction
         </div>
-      </section>
+        <div class="start-menu__btn start-menu__dos">DOS environment</div>
+        <div class="start-menu__btn start-menu__about">About Creator</div>
+      </div>
+      <div class="instruction-view hidden">
+        <h2 class="instruction-view__h2">Instruction</h2>
+        <p class="instruction-view__p">
+          PIG is a simple jeopardy dice game where the player must decide
+          whether or not to jeopardize previous points gained by rolling for
+          potential greater points. On a turn, a player rolls the dice
+          repeatedly until their turn ends either as a result of one of the roll
+          rules listed below or the player chooses to HOLD (stop rolling).
+        </p>
+        <p class="instruction-view__p">
+          If the player chooses to HOLD, all of the points rolled during that
+          turn are added to his or her score.
+        </p>
+        <h3 class="instruction-view__h3">Roll Rules:</h3>
+        <ul class="instruction-view__list">
+          <li class="instruction-view__item">
+            Roll a 7, lose all points on that turn.
+          </li>
+          <li class="instruction-view__item">Land on 100, go back to 0.</li>
+          <li class="instruction-view__item">Roll double 1's, go back to 0.</li>
+          <li class="instruction-view__item">
+            Rolling doubles earns double points, but you must keep rolling.
+          </li>
+          <li class="instruction-view__item">
+            Roll 3 doubles in a row, go back to 0.
+          </li>
+        </ul>
+        <h3 class="instruction-view__h3">Game End:</h3>
+        <p class="instruction-view__p">
+          The game ends when a player holds 101 or more points and the opposing
+          player has had one last turn to try to beat that score.
+        </p>
+
+        <button class="btn instruction-view__btn" onclick="instructionOut()">
+          Back to menu
+        </button>
+      </div>
+
+      <div class="game-view hidden">
+        <section class="player">
+          <div class="overall">
+            <h2 class="name">You:</h2>
+            <p class="score">0</p>
+          </div>
+          <div class="current">
+            <p class="current-label">Current:</p>
+            <p class="current-score">0</p>
+          </div>
+        </section>
+        <section class="game">
+          <button class="roll-btn btn">ROLL</button>
+          <div class="dice-section">
+            <svg class="icon">
+              <use href="sprite.svg#dice-1"></use>
+            </svg>
+            <svg class="icon">
+              <use href="sprite.svg#dice-2"></use>
+            </svg>
+          </div>
+          <button class="hold-btn btn">HoLD</button>
+        </section>
+        <section class="cpu">
+          <div class="current">
+            <p class="current-label">Current:</p>
+            <p class="current-score">0</p>
+          </div>
+          <div class="overall">
+            <h2 class="name">CPU:</h2>
+            <p class="score">0</p>
+          </div>
+        </section>
+
+        <div class="game-view__menu">
+          <button class="new-game__btn btn">New Game</button>
+          <button class="back-menu__btn btn" onclick="gameOut()">
+            Back to Menu
+          </button>
+        </div>
+      </div>
     </main>
+
+    <script src="script.js"></script>
   </body>
 </html>

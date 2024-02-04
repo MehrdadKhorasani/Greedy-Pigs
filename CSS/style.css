@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Single+Day&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+:root {
+  --color-bg: #000;
+  --color-dos-1: #004518;
+  --color-dos-2: #065a05;
+  --color-dos-3: #02aa0a;
+  --color-dos-4: #56b74a;
+}
 
 *,
 *::before,
@@ -9,172 +17,164 @@
 }
 
 html {
-  box-sizing: border-box;
   font-size: 62.5%;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: lightgrey;
   width: 100%;
   height: 100vh;
-  font-family: "Single Day", cursive;
+  font-family: "Press Start 2P", system-ui;
+  background-color: var(--color-bg);
+  color: var(--color-dos-1);
   font-weight: 400;
   line-height: 1.6;
   display: flex;
+  justify-content: center;
   align-items: center;
-}
-
-/* Components */
-.btn {
-  font-size: 1.4rem;
-  background-color: #333;
-  padding: 1rem 1.5rem;
-  border: none;
-  border-radius: 1rem;
-  color: #aaa;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: #444;
-  color: #bbb;
-  scale: 1.1;
 }
 
 main {
-  background-color: #aaa;
-  margin: 3rem auto;
-  padding: 3rem;
-  border-radius: 2rem;
+  width: 100rem;
+  height: 60rem;
+  border: 4px dashed var(--color-dos-1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
 }
 
-.start-menu {
-  width: 50rem;
-
+.player {
+  flex: 50%;
+  padding: 9rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
 }
 
-.start-menu__h1 {
-  font-size: 7.2rem;
-  color: #333;
-  cursor: pointer;
-}
-
-.start-menu__btn {
-  font-size: 4.8rem;
-  color: #333;
-  cursor: pointer;
+.name {
   position: relative;
+  font-size: 4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  font-weight: 300;
+  margin-bottom: 1rem;
 }
 
-.start-menu__btn::after {
-  content: "";
-  width: 0;
-  height: 0.3rem;
-  background-color: #333;
-  position: absolute;
-  bottom: 1px;
-  left: 0;
-  transition: all 0.3s;
-}
-
-.start-menu__btn:hover {
-  color: #111;
-  scale: 1.05;
-  transform: translateY(-0.5rem);
-}
-
-.start-menu__btn:active::after {
-  width: 100%;
-}
-
-/* game View */
-.game-view {
-  position: relative;
-}
-.player {
-  margin: 0 30rem 3rem 30rem;
-}
-.cpu {
-  margin: 3rem 30rem 0rem 30rem;
-}
-.overall {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-}
-.name,
 .score {
-  font-size: 4.8rem;
-}
-.current {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-}
-.current-label,
-.current-score {
-  font-size: 3.6rem;
+  font-size: 8rem;
+  font-weight: 300;
+  color: var(--color-dos-3);
+  margin-bottom: auto;
 }
 
-.game {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+/* .player--active {
+}
+.player--active .name {
+}
+.player--active .score {
+}
+.player--active .current {
+} */
+
+/* .player--winner{} */
+
+.current {
+  width: 65%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.current-label {
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-size: 1.7rem;
+}
+
+.current-score {
+  font-size: 3.5rem;
+}
+
+/* player */
+.player--0 {
+  border-right: 4px dashed var(--color-dos-1);
+}
+
+/* cpu */
+
+/* DICE */
+.dice-holder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .icon {
-  width: 50px;
-  height: 50px;
-  margin: 0.5em;
-  fill: #333;
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--color-bg);
+}
+use {
+  fill: var(--color-dos-2);
 }
 
-.game-view__menu {
+/* BTN */
+.btn {
+  background-color: var(--color-bg);
+  border: 3px dashed var(--color-dos-2);
+  color: var(--color-dos-2);
+  padding: 0.4rem 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.8rem;
+  transform: translateX(-50%);
+}
+
+.btn:hover {
+  background-color: var(--color-dos-3);
+  border: 1px dashed var(--color-dos-1);
+  color: var(--color-bg);
+}
+
+.btn--new {
   position: absolute;
-  right: -16rem;
-  bottom: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  top: 1rem;
+  left: 50%;
 }
-
-/* Instruction View */
-.instruction-view {
-  width: 96rem;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-}
-.instruction-view__h2 {
-  font-size: 4.8rem;
-  text-align: center;
-}
-.instruction-view__h3 {
-  text-align: center;
-
-  font-size: 3.6rem;
-}
-.instruction-view__p {
-  font-size: 1.8rem;
-}
-
-.instruction-view__item {
-  font-size: 1.8rem;
-  margin-left: 2rem;
-}
-
-.instruction-view__btn {
-  margin: 3rem 0 0 0;
-  align-self: flex-end;
+.game-btns {
+  position: absolute;
+  top: 50rem;
+  left: 25%;
+  transform: translate(-25%);
 }
 
 .hidden {
   display: none;
+}
+
+/* MEDIA QUERIES */
+@media only screen and (width <= 960px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (width <= 800px) {
+  html {
+    font-size: 36%;
+  }
+}
+
+@media only screen and (width <= 500px) {
+  html {
+    font-size: 24%;
+  }
+}
+
+@media only screen and (width <= 390px) {
+  html {
+    font-size: 20%;
+  }
 }

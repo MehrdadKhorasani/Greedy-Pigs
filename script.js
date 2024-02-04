@@ -1,24 +1,34 @@
-const startMenu = document.querySelector(".start-menu");
-const instructionView = document.querySelector(".instruction-view");
-const gameView = document.querySelector(".game-view");
-const instructionBtn = document.querySelector(".instruction-view__btn");
+"use strict";
 
-function instructionGO() {
-  startMenu.classList.add("hidden");
-  instructionView.classList.remove("hidden");
-}
+const player0 = document.querySelector(".player--0");
+const player1 = document.querySelector(".player--1");
+const score0 = document.getElementById("score--0");
+const score1 = document.getElementById("score--1");
+const current0 = document.getElementById("current--0");
+const current1 = document.getElementById("current--1");
 
-function instructionOut() {
-  instructionView.classList.add("hidden");
-  startMenu.classList.remove("hidden");
-}
+const dice0 = document.getElementById("dice--0");
+const dice1 = document.getElementById("dice--1");
 
-function gameGo() {
-  startMenu.classList.add("hidden");
-  gameView.classList.remove("hidden");
-}
+const btnNew = document.querySelector(".btn--new");
+const btnRoll = document.querySelector(".btn--roll");
+const btnHold = document.querySelector(".btn--hold");
 
-function gameOut() {
-  startMenu.classList.remove("hidden");
-  gameView.classList.add("hidden");
-}
+let scores, currentScore, activePlayer, playing;
+
+const init = function () {
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  playing = true;
+
+  score0.textContent = 0;
+  score1.textContent = 0;
+  current0.textContent = 0;
+  current1.textContent = 0;
+
+  dice0.classList.add("hidden");
+  dice1.classList.add("hidden");
+};
+
+init();

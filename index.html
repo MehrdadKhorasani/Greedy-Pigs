@@ -10,12 +10,12 @@
   <body>
     <main class="main main-menu">
       <h1 class="game-title">GREEDY PIgS</h1>
-      <p class="menu-item active-item">Play with CPU</p>
-      <p class="menu-item">Play with Friend</p>
-      <p class="menu-item">instruction</p>
+      <p class="menu-item active-item" id="menu-item-cpu">Play with CPU</p>
+      <p class="menu-item" id="menu-item-two">Play with Friend</p>
+      <p class="menu-item" id="menu-item-ins">instruction</p>
     </main>
 
-    <main class="main main-game">
+    <main class="main main-game hiddenView">
       <div class="dice-holder">
         <img class="icon" id="dice--0" src="img/dice-1.png" alt="dice 1" />
         <img class="icon" id="dice--1" src="img/dice-3.png" alt="dice 2" />
@@ -48,6 +48,7 @@
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="JS/menu.js"></script>
+    <script src="JS/script.js"></script>
   </body>
 </html>

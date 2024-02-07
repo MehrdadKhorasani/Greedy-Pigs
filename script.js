@@ -1,7 +1,5 @@
 "use strict";
 
-const player0 = document.querySelector(".player--0");
-const player1 = document.querySelector(".player--1");
 const score0 = document.getElementById("score--0");
 const score1 = document.getElementById("score--1");
 const current0 = document.getElementById("current--0");
@@ -18,13 +16,14 @@ const keyNew = document.querySelector(".key--new");
 const keyRoll = document.querySelector(".key--roll");
 const keyHold = document.querySelector(".key--hold");
 
-let scores, currentScore, activePlayer, playing;
+let scores, currentScore, activePlayer, playing, double;
 
 function init() {
   scores = [0, 0];
   currentScore = 0;
   activePlayer = 0;
   playing = true;
+  double = false;
 
   score0.textContent = 0;
   score1.textContent = 0;
@@ -35,21 +34,23 @@ function init() {
 
   dice0.classList.add("hidden");
   dice1.classList.add("hidden");
+  keyHold.classList.remove("hidden");
+  keyRoll.classList.remove("hidden");
 }
 
 init();
 
 document.addEventListener("keydown", function (e) {
-  if (e.key !== "r") return;
-  roll();
-});
-document.addEventListener("keydown", function (e) {
-  if (e.key !== "h") return;
-  hold();
-});
-document.addEventListener("keydown", function (e) {
-  if (e.key !== "n") return;
-  init();
+  switch (e.key) {
+    case "r":
+      roll();
+      break;
+    case "h":
+      hold();
+      break;
+    case "n":
+      init();
+  }
 });
 
 function switchPlayer() {
@@ -66,11 +67,11 @@ function switchPlayer() {
   }
 }
 
-function rullChecker(firstDice, secondDice, score) {
+function ruleChecker(firstDice, secondDice, score) {
   if (firstDice + secondDice === 7) return "loseCurrent";
   if (firstDice === 1 && secondDice === 1) return "loseTotal";
-  if (firstDice === secondDice) return "mustRoll";
-  if (firstDice + secondDice + score === 100) "loseTotal";
+  if (firstDice + secondDice + score === 100) return "loseTotal";
+  if (firstDice === secondDice) return "hasDouble";
   return "OK";
 }
 
@@ -83,26 +84,30 @@ function roll() {
     dice1.classList.remove("hidden");
     dice1.src = `img/dice-${secondDice}.png`;
 
-    const conclusion = rullChecker(firstDice, secondDice, scores[activePlayer]);
+    const conclusion = ruleChecker(firstDice, secondDice, scores[activePlayer]);
     keyHold.classList.remove("hidden");
     switch (conclusion) {
       case "loseCurrent":
-        current0.textContent = 0;
+        document.getElementById(`current--${activePlayer}`).textContent = 0;
         switchPlayer();
         break;
       case "loseTotal":
         scores[activePlayer] = 0;
-        score0.textContent = 0;
-        current0.textContent = 0;
+        // currentScore = 0;
+        document.getElementById(`score--${activePlayer}`).textContent = 0;
+        document.getElementById(`current--${activePlayer}`).textContent = 0;
         switchPlayer();
         break;
-      case "mustRoll":
+      case "hasDouble":
         keyHold.classList.add("hidden");
         gameStatus.textContent = "Show Must Go on";
         currentScore += firstDice + secondDice;
-        document.getElementById("current--0").textContent = currentScore;
+        document.getElementById(`current--${activePlayer}`).textContent =
+          currentScore;
+        double = true;
         break;
       case "OK":
+        double = false;
         currentScore += firstDice + secondDice;
         document.getElementById(`current--${activePlayer}`).textContent =
           currentScore;
@@ -111,16 +116,24 @@ function roll() {
 }
 
 function hold() {
-  if (playing) {
+  if (playing && !double && currentScore > 0) {
     scores[activePlayer] += currentScore;
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
-    if (scores[activePlayer] >= 100) {
-      playing = false;
-      dice0.classList.add("hidden");
-      dice1.classList.add("hidden");
+    if (scores[activePlayer] > 100) {
+      endGame(scores[activePlayer]);
     } else {
       switchPlayer();
     }
   }
+}
+
+function endGame(score) {
+  playing = false;
+  dice0.classList.add("hidden");
+  dice1.classList.add("hidden");
+  keyHold.classList.add("hidden");
+  keyRoll.classList.add("hidden");
+  const winner = document.getElementById(`name--${activePlayer}`).textContent;
+  gameStatus.textContent = `${winner} with ${score} scores won`;
 }

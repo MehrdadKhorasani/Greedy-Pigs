@@ -2,6 +2,7 @@
 
 const menuView = document.querySelector(".main-menu");
 const gameView = document.querySelector(".main-game");
+const instructView = document.querySelector(".main-instruction");
 
 const menuCpu = document.getElementById("menu-item-cpu");
 const menuTwo = document.getElementById("menu-item-two");
@@ -36,5 +37,10 @@ document.addEventListener("keydown", function (e) {
   if (menuTwo.classList.contains("active-item") && e.key === "Enter") {
     menuView.classList.add("hiddenView");
     gameView.classList.remove("hiddenView");
+  }
+
+  if (menuInstruct.classList.contains("active-item") && e.key === "Enter") {
+    menuView.classList.add("hiddenView");
+    instructView.classList.remove("hiddenView");
   }
 });

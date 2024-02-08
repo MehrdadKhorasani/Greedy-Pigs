@@ -17,6 +17,7 @@ const keyRoll = document.querySelector(".key--roll");
 const keyHold = document.querySelector(".key--hold");
 
 let scores, currentScore, activePlayer, playing, double;
+if (gameView.classList.contains("hiddenView")) !playing;
 
 function init() {
   scores = [0, 0];
@@ -50,10 +51,12 @@ document.addEventListener("keydown", function (e) {
       break;
     case "n":
       init();
+      break;
     case "Escape":
       init();
       menuView.classList.remove("hiddenView");
       gameView.classList.add("hiddenView");
+      instructView.classList.add("hiddenView");
   }
 });
 

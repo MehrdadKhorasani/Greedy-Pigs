@@ -45,12 +45,8 @@ body {
   border: 4px dashed var(--color-dos-1);
   overflow: hidden;
 }
-.main-game {
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: 90% 10%;
-  position: relative;
-}
+
+/* MENU */
 .main-menu {
   text-transform: uppercase;
   display: flex;
@@ -76,6 +72,14 @@ body {
 .active-item {
   color: var(--color-dos-3);
   animation: wink 1s infinite;
+}
+
+/* GAME */
+.main-game {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: 90% 10%;
+  position: relative;
 }
 
 .player {
@@ -197,6 +201,35 @@ p > span {
   font-size: 1.6rem;
 
   animation: wink 2s infinite;
+}
+
+/* Instruction */
+.main-instruction {
+  padding: 3rem;
+  font-size: 1.4rem;
+}
+.instruction-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.instruction-h2 {
+  font-size: 2.4rem;
+  color: var(--color-dos-3);
+}
+.instruction-h3 {
+  color: var(--color-dos-2);
+  font-size: 1.8rem;
+  margin: 1rem 0;
+}
+.instruction-p {
+  line-height: 1.8;
+}
+
+.instruction-list {
+}
+.instruction-item {
 }
 
 /* OTHERS */

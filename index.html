@@ -48,6 +48,41 @@
       </section>
     </main>
 
+    <main class="main main-instruction hiddenView">
+      <div class="instruction-header">
+        <h2 class="instruction-h2">Instruction</h2>
+        <p class="instruction-p"><span>esc</span> - Back to menu</p>
+      </div>
+      <p class="instruction-p">
+        Greedy pigs is a simple jeopardy dice game where the player must decide
+        whether or not to jeopardize previous points gained by rolling for
+        potential greater points. On a turn, a player rolls the dice repeatedly
+        until their turn ends either as a result of one of the roll rules listed
+        below or the player chooses to HOLD (stop rolling).
+      </p>
+      <p class="instruction-p">
+        If the player chooses to HOLD, all of the points rolled during that turn
+        are added to his or her score.
+      </p>
+      <h3 class="instruction-h3">Roll Rules:</h3>
+      <ul class="instruction-list">
+        <li class="instruction-item">
+          Roll a 7, lose all points on that turn.
+        </li>
+        <li class="instruction-item">Land on 100, go back to 0.</li>
+        <li class="instruction-item">Roll double 1's, go back to 0.</li>
+        <li class="instruction-item">
+          Rolling doubles earns double points, but you must keep rolling.
+        </li>
+        <li class="instruction-item">Roll 3 doubles in a row, go back to 0.</li>
+      </ul>
+      <h3 class="instruction-h3">Game End:</h3>
+      <p class="instruction-p">
+        The game ends when a player holds 101 or more points and the opposing
+        player has had one last turn to try to beat that score.
+      </p>
+    </main>
+
     <script src="JS/menu.js"></script>
     <script src="JS/script.js"></script>
   </body>

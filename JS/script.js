@@ -69,7 +69,12 @@ const keyNew = document.querySelector(".key--new");
 const keyRoll = document.querySelector(".key--roll");
 const keyHold = document.querySelector(".key--hold");
 
-let scores, currentScore, activePlayer, playing, double;
+let scores,
+  currentScore,
+  activePlayer,
+  playing,
+  double,
+  lastThreeRolls = [[], []];
 
 function init() {
   scores = [0, 0];
@@ -77,21 +82,20 @@ function init() {
   activePlayer = 0;
   playing = true;
   double = false;
+  lastThreeRolls = [];
 
   score0.textContent = 0;
   score1.textContent = 0;
   current0.textContent = 0;
   current1.textContent = 0;
 
-  gameStatus.textContent = "Roll the Dice ...";
+  statusBar("Roll the Dice to start the game");
 
   dice0.classList.add("hidden");
   dice1.classList.add("hidden");
   keyHold.classList.remove("hidden");
   keyRoll.classList.remove("hidden");
 }
-
-init();
 
 document.addEventListener("keydown", function (e) {
   switch (e.key) {
@@ -113,7 +117,12 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+function statusBar(msg) {
+  gameStatus.textContent = msg;
+}
+
 function switchPlayer() {
+  lastThreeRolls = [];
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   currentScore = 0;
   activePlayer = activePlayer === 0 ? 1 : 0;
@@ -121,9 +130,11 @@ function switchPlayer() {
   if (activePlayer === 0) {
     playerName.classList.add("active");
     cpuName.classList.remove("active");
+    statusBar(`${playerName.textContent}'s turn`);
   } else {
     cpuName.classList.add("active");
     playerName.classList.remove("active");
+    statusBar(`${cpuName.textContent}'s turn`);
   }
 }
 
@@ -131,7 +142,7 @@ function ruleChecker(firstDice, secondDice, score) {
   if (firstDice + secondDice === 7) return "loseCurrent";
   if (firstDice + secondDice + score === 100) return "loseTotal";
   if (firstDice === 1 && secondDice === 1) return "loseTotal";
-  if (firstDice === secondDice) return "hasDouble";
+  if (firstDice === secondDice) return "isDouble";
   return "OK";
 }
 
@@ -139,13 +150,20 @@ function roll() {
   if (playing) {
     const firstDice = Math.trunc(Math.random() * 6) + 1;
     const secondDice = Math.trunc(Math.random() * 6) + 1;
+
     dice0.classList.remove("hidden");
     dice0.src = `img/dice-${firstDice}.png`;
     dice1.classList.remove("hidden");
     dice1.src = `img/dice-${secondDice}.png`;
 
     const conclusion = ruleChecker(firstDice, secondDice, scores[activePlayer]);
+
     keyHold.classList.remove("hidden");
+    statusBar(
+      `${
+        activePlayer === 0 ? playerName.textContent : cpuName.textContent
+      }'s turn`
+    );
     switch (conclusion) {
       case "loseCurrent":
         document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -157,13 +175,22 @@ function roll() {
         document.getElementById(`current--${activePlayer}`).textContent = 0;
         switchPlayer();
         break;
-      case "hasDouble":
+      case "isDouble":
         keyHold.classList.add("hidden");
-        gameStatus.textContent = "Show Must Go on";
+        statusBar("Doubles means NO HOLD");
         currentScore += firstDice + secondDice;
         document.getElementById(`current--${activePlayer}`).textContent =
           currentScore;
         double = true;
+        lastThreeRolls.push("d");
+        console.log(lastThreeRolls);
+        if (lastThreeRolls.length >= 3) {
+          scores[activePlayer] = 0;
+          document.getElementById(`score--${activePlayer}`).textContent = 0;
+          document.getElementById(`current--${activePlayer}`).textContent = 0;
+          statusBar("Three Doubles means 0");
+          switchPlayer();
+        }
         break;
       case "OK":
         double = false;
@@ -200,5 +227,7 @@ function endGame(score) {
   keyHold.classList.add("hidden");
   keyRoll.classList.add("hidden");
   const winner = document.getElementById(`name--${activePlayer}`).textContent;
-  gameStatus.textContent = `${winner} with ${score} scores won`;
+  statusBar(`${winner} with ${score} scores won`);
 }
+
+init();

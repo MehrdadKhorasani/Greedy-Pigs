@@ -122,6 +122,8 @@ function statusBar(msg) {
 }
 
 function switchPlayer() {
+  keyHold.classList.remove("hidden");
+  keyRoll.classList.remove("hidden");
   lastThreeRolls = [];
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   currentScore = 0;
@@ -189,7 +191,12 @@ function roll() {
           document.getElementById(`score--${activePlayer}`).textContent = 0;
           document.getElementById(`current--${activePlayer}`).textContent = 0;
           statusBar("Three Doubles means 0");
-          switchPlayer();
+          keyHold.classList.add("hidden");
+          keyRoll.classList.add("hidden");
+
+          setTimeout(() => {
+            switchPlayer();
+          }, 2000);
         }
         break;
       case "OK":
@@ -202,6 +209,7 @@ function roll() {
           document.getElementById(`score--${activePlayer}`).textContent = 0;
           document.getElementById(`current--${activePlayer}`).textContent = 0;
           switchPlayer();
+          break;
         }
     }
   }

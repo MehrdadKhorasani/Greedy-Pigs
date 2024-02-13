@@ -3,6 +3,7 @@
 //views
 const menuView = document.querySelector(".main-menu");
 const gameView = document.querySelector(".main-game");
+const npcView = document.querySelector(".main-npc");
 const instructView = document.querySelector(".main-instruction");
 //Menu View
 const menuCpu = document.getElementById("menu-item-cpu");
@@ -14,8 +15,11 @@ window.addEventListener("load", menu);
 function menu() {
   gameView.classList.add("hiddenView");
   instructView.classList.add("hiddenView");
+  npcView.classList.add("hiddenView");
   menuView.classList.remove("hiddenView");
   playing = false;
+
+  // menu function
   document.addEventListener("keydown", function (e) {
     if (menuCpu.classList.contains("active-item") && e.key === "ArrowDown") {
       menuCpu.classList.remove("active-item");
@@ -48,6 +52,11 @@ function menu() {
     if (menuInstruct.classList.contains("active-item") && e.key === "Enter") {
       menuView.classList.add("hiddenView");
       instructView.classList.remove("hiddenView");
+    }
+
+    if (menuCpu.classList.contains("active-item") && e.key === "Enter") {
+      menuView.classList.add("hiddenView");
+      npcView.classList.remove("hiddenView");
     }
   });
 }
@@ -112,6 +121,7 @@ document.addEventListener("keydown", function (e) {
       init();
       menuView.classList.remove("hiddenView");
       gameView.classList.add("hiddenView");
+      npcView.classList.add("hiddenView");
       instructView.classList.add("hiddenView");
       break;
   }
@@ -237,5 +247,3 @@ function endGame(score) {
   const winner = document.getElementById(`name--${activePlayer}`).textContent;
   statusBar(`${winner} with ${score} scores won`);
 }
-
-init();

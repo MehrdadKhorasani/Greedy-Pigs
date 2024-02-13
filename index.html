@@ -21,7 +21,7 @@
         <img class="icon" id="dice--1" src="img/dice-3.png" alt="dice 2" />
       </div>
       <section class="player player--0">
-        <h2 class="name" id="name--0">PLAYER</h2>
+        <h2 class="name" id="name--0">PLAYER1</h2>
         <p class="score" id="score--0">0</p>
         <div class="current">
           <p class="current-label">Current</p>
@@ -30,11 +30,44 @@
       </section>
 
       <section class="player player--1">
-        <h2 class="name" id="name--1">CPU</h2>
-        <p class="score" id="score--1">10</p>
+        <h2 class="name" id="name--1">Player-2</h2>
+        <p class="score" id="score--1">0</p>
         <div class="current">
           <p class="current-label">Current</p>
           <p class="current-score" id="current--1">0</p>
+        </div>
+      </section>
+
+      <section class="keys">
+        <p class="key key--new"><span>N</span> - New Game</p>
+        <p class="key key--roll"><span>R</span> - Roll</p>
+        <p class="key key--hold"><span>H</span> - Hold</p>
+        <p class="key key--menu"><span>ESC</span> - Menu</p>
+
+        <p class="status-bar">Your turn ...</p>
+      </section>
+    </main>
+
+    <main class="main main-npc hiddenView">
+      <div class="dice-holder">
+        <img class="icon" id="dice--0" src="img/dice-6.png" alt="dice 1" />
+        <img class="icon" id="dice--1" src="img/dice-6.png" alt="dice 2" />
+      </div>
+      <section class="player player--0">
+        <h2 class="name" id="name--0">PLAYER</h2>
+        <p class="score" id="score--0">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--0">0</p>
+        </div>
+      </section>
+
+      <section class="npc">
+        <h2 class="name" id="npc--name">npc</h2>
+        <p class="score" id="npc--score">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--npc">0</p>
         </div>
       </section>
 
@@ -71,9 +104,7 @@
         </li>
         <li class="instruction-item">Land on 100, go back to 0.</li>
         <li class="instruction-item">Roll double 1's, go back to 0.</li>
-        <li class="instruction-item">
-          Rolling doubles earns double points, but you must keep rolling.
-        </li>
+        <li class="instruction-item">If you roll doubles, you can't hold.</li>
         <li class="instruction-item">
           Roll 3 doubles in your turn, go back to 0.
         </li>

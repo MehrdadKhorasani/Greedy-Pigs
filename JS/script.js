@@ -21,42 +21,46 @@ function menu() {
 
   // menu function
   document.addEventListener("keydown", function (e) {
-    if (menuCpu.classList.contains("active-item") && e.key === "ArrowDown") {
-      menuCpu.classList.remove("active-item");
-      menuTwo.classList.add("active-item");
-    } else if (
-      menuTwo.classList.contains("active-item") &&
-      e.key === "ArrowDown"
-    ) {
-      menuTwo.classList.remove("active-item");
-      menuInstruct.classList.add("active-item");
-    } else if (
-      menuTwo.classList.contains("active-item") &&
-      e.key === "ArrowUp"
-    ) {
-      menuTwo.classList.remove("active-item");
-      menuCpu.classList.add("active-item");
-    } else if (
-      menuInstruct.classList.contains("active-item") &&
-      e.key === "ArrowUp"
-    ) {
-      menuInstruct.classList.remove("active-item");
-      menuTwo.classList.add("active-item");
-    }
-    if (menuTwo.classList.contains("active-item") && e.key === "Enter") {
-      menuView.classList.add("hiddenView");
-      gameView.classList.remove("hiddenView");
-      init();
-    }
+    if (playing === false) {
+      if (menuCpu.classList.contains("active-item") && e.key === "ArrowDown") {
+        menuCpu.classList.remove("active-item");
+        menuTwo.classList.add("active-item");
+      } else if (
+        menuTwo.classList.contains("active-item") &&
+        e.key === "ArrowDown"
+      ) {
+        menuTwo.classList.remove("active-item");
+        menuInstruct.classList.add("active-item");
+      } else if (
+        menuTwo.classList.contains("active-item") &&
+        e.key === "ArrowUp"
+      ) {
+        menuTwo.classList.remove("active-item");
+        menuCpu.classList.add("active-item");
+      } else if (
+        menuInstruct.classList.contains("active-item") &&
+        e.key === "ArrowUp"
+      ) {
+        menuInstruct.classList.remove("active-item");
+        menuTwo.classList.add("active-item");
+      }
+      if (menuTwo.classList.contains("active-item") && e.key === "Enter") {
+        menuView.classList.add("hiddenView");
+        gameView.classList.remove("hiddenView");
+        init();
+      }
 
-    if (menuInstruct.classList.contains("active-item") && e.key === "Enter") {
-      menuView.classList.add("hiddenView");
-      instructView.classList.remove("hiddenView");
-    }
+      if (menuInstruct.classList.contains("active-item") && e.key === "Enter") {
+        menuView.classList.add("hiddenView");
+        instructView.classList.remove("hiddenView");
+        playing = true;
+      }
 
-    if (menuCpu.classList.contains("active-item") && e.key === "Enter") {
-      menuView.classList.add("hiddenView");
-      npcView.classList.remove("hiddenView");
+      if (menuCpu.classList.contains("active-item") && e.key === "Enter") {
+        menuView.classList.add("hiddenView");
+        npcView.classList.remove("hiddenView");
+        playing = true;
+      }
     }
   });
 }
@@ -98,6 +102,9 @@ function init() {
   current0.textContent = 0;
   current1.textContent = 0;
 
+  playerName.classList.add("active");
+  cpuName.classList.remove("active");
+
   statusBar("Roll the Dice to start the game");
 
   dice0.classList.add("hidden");
@@ -123,6 +130,7 @@ document.addEventListener("keydown", function (e) {
       gameView.classList.add("hiddenView");
       npcView.classList.add("hiddenView");
       instructView.classList.add("hiddenView");
+      playing = false;
       break;
   }
 });

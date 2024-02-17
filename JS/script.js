@@ -11,7 +11,6 @@ const menuInstruct = document.getElementById("menu-item-ins");
 
 //Single Mode
 let singleMode = false;
-let npcTurn = false;
 
 window.addEventListener("load", menu);
 
@@ -114,6 +113,8 @@ function init() {
   dice1.classList.add("hidden");
   keyHold.classList.remove("hidden");
   keyRoll.classList.remove("hidden");
+  if (singleMode) cpuName.textContent = "NPC";
+  if (!singleMode) cpuName.textContent = "Player-2";
 }
 
 document.addEventListener("keydown", function (e) {
@@ -150,16 +151,6 @@ function switchPlayer() {
   currentScore = 0;
   activePlayer = activePlayer === 0 ? 1 : 0;
 
-  if (singleMode) {
-    if (activePlayer === 0) {
-      playerName.classList.add("active");
-      cpuName.classList.remove("active");
-      statusBar(`${playerName.textContent}'s turn`);
-    } else if (activePlayer === 1 && npcTurn) {
-      npcRoll();
-    }
-  }
-
   if (activePlayer === 0) {
     playerName.classList.add("active");
     cpuName.classList.remove("active");
@@ -180,65 +171,10 @@ function ruleChecker(firstDice, secondDice, score) {
 }
 
 function roll() {
-  if (playing && singleMode) {
-    const firstDice = Math.trunc(Math.random() * 6) + 1;
-    const secondDice = Math.trunc(Math.random() * 6) + 1;
-    dice0.classList.remove("hidden");
-    dice0.src = `img/dice-${firstDice}.png`;
-    dice1.classList.remove("hidden");
-    dice1.src = `img/dice-${secondDice}.png`;
-
-    const conclusion = ruleChecker(firstDice, secondDice, scores[0]);
-    switch (conclusion) {
-      case "loseCurrent":
-        document.getElementById(`current--${activePlayer}`).textContent = 0;
-        switchPlayer();
-        break;
-      case "loseTotal":
-        scores[activePlayer] = 0;
-        document.getElementById(`score--${activePlayer}`).textContent = 0;
-        document.getElementById(`current--${activePlayer}`).textContent = 0;
-        switchPlayer();
-        break;
-      case "isDouble":
-        keyHold.classList.add("hidden");
-        statusBar("Doubles means NO HOLD");
-        currentScore += firstDice + secondDice;
-        document.getElementById(`current--${activePlayer}`).textContent =
-          currentScore;
-        double = true;
-        lastThreeRolls.push("d");
-        console.log(lastThreeRolls);
-        if (lastThreeRolls.length >= 3) {
-          scores[activePlayer] = 0;
-          document.getElementById(`score--${activePlayer}`).textContent = 0;
-          document.getElementById(`current--${activePlayer}`).textContent = 0;
-          statusBar("Three Doubles means 0");
-          keyHold.classList.add("hidden");
-          keyRoll.classList.add("hidden");
-
-          setTimeout(() => {
-            switchPlayer();
-          }, 2000);
-        }
-        break;
-      case "OK":
-        double = false;
-        currentScore += firstDice + secondDice;
-        document.getElementById(`current--${activePlayer}`).textContent =
-          currentScore;
-        if (currentScore + scores[activePlayer] === 100) {
-          scores[activePlayer] = 0;
-          document.getElementById(`score--${activePlayer}`).textContent = 0;
-          document.getElementById(`current--${activePlayer}`).textContent = 0;
-          switchPlayer();
-          break;
-        }
-    }
-
-    npcTurn = true;
+  if (playing && singleMode && activePlayer === 1) {
+    npcRoll();
   }
-  if (playing && !singleMode) {
+  if (playing) {
     const firstDice = Math.trunc(Math.random() * 6) + 1;
     const secondDice = Math.trunc(Math.random() * 6) + 1;
 
@@ -274,7 +210,6 @@ function roll() {
           currentScore;
         double = true;
         lastThreeRolls.push("d");
-        console.log(lastThreeRolls);
         if (lastThreeRolls.length >= 3) {
           scores[activePlayer] = 0;
           document.getElementById(`score--${activePlayer}`).textContent = 0;
@@ -328,12 +263,72 @@ function endGame(score) {
 }
 
 function npcRoll() {
-  const firstDice = Math.trunc(Math.random() * 6) + 1;
-  const secondDice = Math.trunc(Math.random() * 6) + 1;
-  console.log(firstDice, secondDice);
-  if (currentScore >= 20) {
-    hold();
-    return;
+  const rollTimes = Math.floor(Math.random() * 6) + 1;
+  let rollCount = 0;
+  console.log(rollTimes);
+
+  function performNpcRoll() {
+    const firstDice = Math.trunc(Math.random() * 6) + 1;
+    const secondDice = Math.trunc(Math.random() * 6) + 1;
+
+    console.log(firstDice, secondDice);
+    dice0.src = `img/dice-${firstDice}.png`;
+    dice1.src = `img/dice-${secondDice}.png`;
+
+    const conclusion = ruleChecker(firstDice, secondDice, scores[1]);
+    switch (conclusion) {
+      case "loseCurrent":
+        document.getElementById(`current--${activePlayer}`).textContent = 0;
+        switchPlayer();
+        break;
+      case "loseTotal":
+        scores[1] = 0;
+        score1.textContent = 0;
+        current1.textContent = 0;
+        switchPlayer();
+        break;
+      case "isDouble":
+        keyHold.classList.add("hidden");
+        statusBar("Doubles means NO HOLD");
+        currentScore += firstDice + secondDice;
+        current1.textContent = currentScore;
+        double = true;
+        lastThreeRolls.push("d");
+        if (lastThreeRolls.length >= 3) {
+          scores[1] = 0;
+          score1.textContent = 0;
+          current1.textContent = 0;
+          statusBar("Three Doubles means 0");
+          keyHold.classList.add("hidden");
+          keyRoll.classList.add("hidden");
+
+          setTimeout(() => {
+            switchPlayer();
+          }, 2000);
+        }
+        break;
+      case "OK":
+        double = false;
+        currentScore += firstDice + secondDice;
+        current1.textContent = currentScore;
+        if (currentScore + scores[1] === 100) {
+          scores[1] = 0;
+          score1.textContent = 0;
+          current1.textContent = 0;
+          switchPlayer();
+          break;
+        }
+    }
+
+    rollCount++;
+    if (rollCount < rollTimes && activePlayer === 1) {
+      setTimeout(performNpcRoll, 2000);
+    } else {
+      setTimeout(() => {
+        switchPlayer();
+      }, 2000);
+    }
   }
-  const conclusion = ruleChecker(firstDice, secondDice, scores[1]);
+
+  performNpcRoll();
 }

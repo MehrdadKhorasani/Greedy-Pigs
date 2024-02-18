@@ -139,7 +139,9 @@ document.addEventListener("keydown", function (e) {
         break;
     }
   }
-  if (playing && singleMode && activePlayer === 1) console.log(":(");
+  if (playing && singleMode && activePlayer === 1) {
+    npcRoll();
+  }
 });
 
 function statusBar(msg) {
@@ -208,8 +210,8 @@ function endGame(score) {
 
 function npcRoll() {
   const rollTimes = Math.floor(Math.random() * 6) + 1;
-  console.log(rollTimes);
   let rollCount = 0;
+  console.log(rollTimes);
 
   function performNpcRoll() {
     performRoll();
@@ -219,7 +221,7 @@ function npcRoll() {
       setTimeout(performNpcRoll, 2000);
     } else {
       setTimeout(() => {
-        switchPlayer();
+        hold();
       }, 2000);
     }
   }

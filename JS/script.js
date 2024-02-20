@@ -118,12 +118,14 @@ function init() {
 }
 
 document.addEventListener("keydown", function (e) {
-  if ((playing && activePlayer !== 1) || !singleMode) {
+  if (playing) {
     switch (e.key) {
       case "r":
+        if (singleMode && activePlayer === 1) return false;
         roll();
         break;
       case "h":
+        if (singleMode && activePlayer === 1) return false;
         hold();
         break;
       case "n":

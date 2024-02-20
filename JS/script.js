@@ -77,6 +77,9 @@ const gameStatus = document.querySelector(".status-bar");
 const playerName = document.getElementById("name--0");
 const cpuName = document.getElementById("name--1");
 
+const loader = document.querySelector(".loader-holder");
+const dices = document.querySelector(".dice-holder");
+
 const dice0 = document.getElementById("dice--0");
 const dice1 = document.getElementById("dice--1");
 
@@ -92,6 +95,8 @@ let scores,
   lastThreeRolls = [[], []];
 
 function init() {
+  // dices.classList.add("hidden");
+  // loader.classList.remove("hidden");
   scores = [0, 0];
   currentScore = 0;
   activePlayer = 0;

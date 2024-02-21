@@ -188,7 +188,10 @@ function roll() {
     return;
   }
   if (playing) {
-    performRoll();
+    dices.classList.add("hidden");
+    loader.classList.remove("hidden");
+    playing = false;
+    setTimeout(() => performRoll(), 1500);
   }
 }
 
@@ -232,11 +235,17 @@ function npcRoll() {
       }, 2000);
     }
   }
-
-  performNpcRoll();
+  dices.classList.add("hidden");
+  loader.classList.remove("hidden");
+  playing = false;
+  setTimeout(() => performNpcRoll(), 1500);
 }
 
 function performRoll() {
+  dices.classList.remove("hidden");
+  loader.classList.add("hidden");
+  playing = true;
+
   const firstDice = Math.trunc(Math.random() * 6) + 1;
   const secondDice = Math.trunc(Math.random() * 6) + 1;
   console.log(firstDice, secondDice);

@@ -2,6 +2,10 @@
 
 This is a simple web-based implementation of the classic 'Pig Dice' game, where two players take turns rolling a dice and accumulating points. the first player to reach a certain score wins the game.
 
+## Project's Demo
+
+[@PLAY](https://greedy-pigs.vercel.app/)
+
 ## Features
 
 - Implement a single-player mode with NPC

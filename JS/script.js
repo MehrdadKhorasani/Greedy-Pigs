@@ -221,7 +221,6 @@ function endGame(score) {
 function npcRoll() {
   const rollTimes = Math.floor(Math.random() * 6) + 1;
   let rollCount = 0;
-  console.log(rollTimes);
 
   function performNpcRoll() {
     performRoll();
@@ -248,7 +247,6 @@ function performRoll() {
 
   const firstDice = Math.trunc(Math.random() * 6) + 1;
   const secondDice = Math.trunc(Math.random() * 6) + 1;
-  console.log(firstDice, secondDice);
 
   dice0.classList.remove("hidden");
   dice0.src = `img/dice-${firstDice}.png`;
@@ -267,12 +265,22 @@ function performRoll() {
     case "loseCurrent":
       document.getElementById(`current--${activePlayer}`).textContent = 0;
       switchPlayer();
+      if (singleMode && activePlayer === 1) {
+        setTimeout(() => {
+          npcRoll();
+        }, 1500);
+      }
       break;
     case "loseTotal":
       scores[activePlayer] = 0;
       document.getElementById(`score--${activePlayer}`).textContent = 0;
       document.getElementById(`current--${activePlayer}`).textContent = 0;
       switchPlayer();
+      if (singleMode && activePlayer === 1) {
+        setTimeout(() => {
+          npcRoll();
+        }, 1500);
+      }
       break;
     case "isDouble":
       keyHold.classList.add("hidden");
@@ -292,6 +300,7 @@ function performRoll() {
 
         setTimeout(() => {
           switchPlayer();
+          setTimeout(() => npcRoll(), 1000);
         }, 2000);
       }
       break;

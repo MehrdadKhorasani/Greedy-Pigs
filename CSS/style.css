@@ -63,6 +63,7 @@ body {
     var(--color-dos-4)
   );
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
 .menu-item {

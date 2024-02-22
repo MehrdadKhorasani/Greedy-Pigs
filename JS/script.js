@@ -95,8 +95,6 @@ let scores,
   lastThreeRolls = [[], []];
 
 function init() {
-  // dices.classList.add("hidden");
-  // loader.classList.remove("hidden");
   scores = [0, 0];
   currentScore = 0;
   activePlayer = 0;
@@ -303,6 +301,7 @@ function performRoll() {
           setTimeout(() => npcRoll(), 1000);
         }, 2000);
       }
+
       break;
     case "OK":
       double = false;

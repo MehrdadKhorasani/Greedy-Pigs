@@ -144,7 +144,7 @@ body {
   transform: translate(-50%, -50%);
 }
 .loader-item {
-  background-color: var(--color-dos-3);
+  background-color: var(--color-dos-2);
   border-radius: 1px;
   padding: 0.8rem;
   margin: 0.1rem;
@@ -162,12 +162,8 @@ body {
 }
 
 @keyframes loader {
-  0% {
-    transform: scale(1);
-  }
   50% {
-    transform: scale(1.5);
-    transform: translateY(-0.5rem);
+    background-color: var(--color-dos-4);
   }
 }
 

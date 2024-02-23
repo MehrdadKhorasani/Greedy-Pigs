@@ -189,7 +189,7 @@ function roll() {
     dices.classList.add("hidden");
     loader.classList.remove("hidden");
     playing = false;
-    setTimeout(() => performRoll(), 1500);
+    setTimeout(() => performRoll(null, null), 1500);
   }
 }
 
@@ -221,7 +221,7 @@ function npcRoll() {
   let rollCount = 0;
 
   function performNpcRoll() {
-    performRoll();
+    performRoll(rollTimes, rollCount);
 
     rollCount++;
     if (rollCount < rollTimes && activePlayer === 1) {
@@ -238,7 +238,7 @@ function npcRoll() {
   setTimeout(() => performNpcRoll(), 1500);
 }
 
-function performRoll() {
+function performRoll(rollTimes, rollCount) {
   dices.classList.remove("hidden");
   loader.classList.add("hidden");
   playing = true;
@@ -301,7 +301,14 @@ function performRoll() {
           setTimeout(() => npcRoll(), 1000);
         }, 2000);
       }
-
+      if (
+        rollCount === rollTimes - 1 &&
+        activePlayer === 1 &&
+        singleMode &&
+        lastThreeRolls.length < 2 //this is not OK
+      ) {
+        setTimeout(() => performRoll(), 1500);
+      }
       break;
     case "OK":
       double = false;

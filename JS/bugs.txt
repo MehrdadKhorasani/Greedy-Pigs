@@ -9,3 +9,4 @@ Bugs:
     2. implement the game for smartphone.
     3. 101 < score situation.
     4. check all the situation and make the status bar complete.
+    5. Is there a way to implement all the game in OOP?

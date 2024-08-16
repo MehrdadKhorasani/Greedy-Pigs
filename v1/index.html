@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GREEDY PIGS</title>
+    <link rel="icon" href="img/title-img.svg" />
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <body>
+    <main class="main main-menu">
+      <h1 class="game-title">GREEDY PIgS</h1>
+      <p class="menu-item active-item" id="menu-item-cpu">Play with NPC</p>
+      <p class="menu-item" id="menu-item-two">Play with Friend</p>
+      <p class="menu-item" id="menu-item-ins">instruction</p>
+    </main>
+
+    <main class="main main-game hiddenView">
+      <div class="dice-holder">
+        <img class="icon" id="dice--0" src="img/dice-1.png" alt="dice 1" />
+        <img class="icon" id="dice--1" src="img/dice-3.png" alt="dice 2" />
+      </div>
+      <div class="loader-holder hidden">
+        <div class="loader-item first-loader"></div>
+        <div class="loader-item second-loader"></div>
+        <div class="loader-item third-loader"></div>
+      </div>
+      <section class="player player--0">
+        <h2 class="name" id="name--0">PLAYER-1</h2>
+        <p class="score" id="score--0">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--0">0</p>
+        </div>
+      </section>
+
+      <section class="player player--1">
+        <h2 class="name" id="name--1">Player-2</h2>
+        <p class="score" id="score--1">0</p>
+        <div class="current">
+          <p class="current-label">Current</p>
+          <p class="current-score" id="current--1">0</p>
+        </div>
+      </section>
+
+      <section class="keys">
+        <p class="key key--new"><span>N</span> - New Game</p>
+        <p class="key key--roll"><span>R</span> - Roll</p>
+        <p class="key key--hold"><span>H</span> - Hold</p>
+        <p class="key key--menu"><span>ESC</span> - Menu</p>
+
+        <p class="status-bar">Your turn ...</p>
+      </section>
+    </main>
+
+    <main class="main main-instruction hiddenView">
+      <div class="instruction-header">
+        <h2 class="instruction-h2">Instruction</h2>
+        <p class="instruction-p"><span>esc</span> - Back to menu</p>
+      </div>
+      <p class="instruction-p">
+        Greedy pigs is a simple jeopardy dice game where the player must decide
+        whether or not to jeopardize previous points gained by rolling for
+        potential greater points. On a turn, a player rolls the dice repeatedly
+        until their turn ends either as a result of one of the roll rules listed
+        below or the player chooses to HOLD (stop rolling).
+      </p>
+      <p class="instruction-p">
+        If the player chooses to HOLD, all of the points rolled during that turn
+        are added to his or her score.
+      </p>
+      <h3 class="instruction-h3">Roll Rules:</h3>
+      <ul class="instruction-list">
+        <li class="instruction-item">
+          Roll a 7, lose all points on that turn.
+        </li>
+        <li class="instruction-item">Land on 100, go back to 0.</li>
+        <li class="instruction-item">Roll double 1's, go back to 0.</li>
+        <li class="instruction-item">If you roll doubles, you can't hold.</li>
+        <li class="instruction-item">
+          Roll 3 doubles in your turn, go back to 0.
+        </li>
+      </ul>
+      <h3 class="instruction-h3">Game End:</h3>
+      <p class="instruction-p">
+        The game ends when a player holds 101 or more points and the opposing
+        player has had one last turn to try to beat that score.
+      </p>
+    </main>
+
+    <script src="JS/script.js"></script>
+  </body>
+</html>

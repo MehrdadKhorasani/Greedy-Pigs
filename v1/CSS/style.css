@@ -1,0 +1,320 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+:root {
+  --color-bg: #000;
+  --color-dos-1: #004518;
+  --color-dos-2: #065a05;
+  --color-dos-3: #02aa0a;
+  --color-dos-4: #56b74a;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  font-family: "Press Start 2P", system-ui;
+  background-color: var(--color-bg);
+  color: var(--color-dos-1);
+  font-weight: 400;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: none;
+}
+
+::selection {
+  visibility: hidden;
+}
+
+.main {
+  width: 100rem;
+  height: 60rem;
+  border: 4px dashed var(--color-dos-1);
+  overflow: hidden;
+}
+
+/* MENU */
+.main-menu {
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-title {
+  font-size: 3.6rem;
+  margin-bottom: 4rem;
+  background-image: linear-gradient(
+    to right bottom,
+    var(--color-dos-1),
+    var(--color-dos-4)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.menu-item {
+  margin: 1rem 0;
+  font-size: 1.8rem;
+}
+.active-item {
+  color: var(--color-dos-3);
+  animation: wink 1s infinite;
+}
+
+/* GAME */
+.main-game {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: 90% 10%;
+  position: relative;
+}
+
+.player {
+  padding: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  position: relative;
+  font-size: 3.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.score {
+  font-size: 8rem;
+  font-weight: 300;
+  color: var(--color-dos-3);
+  margin-bottom: auto;
+}
+
+.current {
+  width: 65%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.current-label {
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-size: 1.7rem;
+}
+
+.current-score {
+  font-size: 3.5rem;
+}
+
+/* DICE */
+.dice-holder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+/* LOADER */
+.loader-holder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loader-item {
+  background-color: var(--color-dos-2);
+  border-radius: 1px;
+  padding: 0.8rem;
+  margin: 0.1rem;
+  display: inline-block;
+}
+
+.first-loader {
+  animation: loader 1s 0s infinite;
+}
+.second-loader {
+  animation: loader 1s 0.2s infinite;
+}
+.third-loader {
+  animation: loader 1s 0.4s infinite;
+}
+
+@keyframes loader {
+  50% {
+    background-color: var(--color-dos-4);
+  }
+}
+
+/* KEYS SECTION */
+.keys {
+  pointer-events: none;
+
+  border-top: 4px dashed var(--color-dos-1);
+  grid-column: span 2;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.key {
+  background-color: var(--color-bg);
+  border: none;
+  color: var(--color-dos-2);
+  padding: 0.4rem 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.4rem;
+  align-items: center;
+}
+
+.key--roll {
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 1;
+  text-align: left;
+}
+
+.key--hold {
+  grid-column: 1 / span 1;
+  grid-row: 2 / span 1;
+  text-align: left;
+}
+
+.key--new {
+  grid-column: 3 / -1;
+  grid-row: 1 / 2;
+  text-align: right;
+}
+
+.key--menu {
+  grid-column: 3/-1;
+  grid-row: 2 / -1;
+  text-align: right;
+}
+
+p > span {
+  color: var(--color-dos-3);
+}
+
+.status-bar {
+  grid-column: 2/3;
+  grid-row: 1/-1;
+  display: flex;
+  justify-self: center;
+  align-self: center;
+
+  color: var(--color-dos-4);
+  font-size: 1.6rem;
+
+  animation: wink 2s infinite;
+}
+
+/* Instruction */
+.main-instruction {
+  padding: 3rem;
+  font-size: 1.4rem;
+}
+.instruction-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.instruction-h2 {
+  font-size: 2.4rem;
+  color: var(--color-dos-3);
+}
+.instruction-h3 {
+  color: var(--color-dos-2);
+  font-size: 1.8rem;
+  margin: 1rem 0;
+}
+.instruction-p {
+  line-height: 1.8;
+}
+
+.instruction-list {
+  margin-left: 4rem;
+}
+
+/* npc mode */
+.main-npc {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  grid-template-rows: 90% 10%;
+  position: relative;
+}
+.npc {
+  padding: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* OTHERS */
+
+.hidden {
+  display: none;
+}
+
+.hiddenView {
+  display: none;
+}
+
+.active {
+  color: var(--color-dos-4);
+  animation: wink 2s step-start 1s infinite;
+}
+
+@keyframes wink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* MEDIA QUERIES */
+@media only screen and (width <= 960px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (width <= 800px) {
+  html {
+    font-size: 36%;
+  }
+}
+
+@media only screen and (width <= 500px) {
+  html {
+    font-size: 24%;
+  }
+}
+
+@media only screen and (width <= 390px) {
+  html {
+    font-size: 20%;
+  }
+}

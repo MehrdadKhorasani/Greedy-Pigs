@@ -1,2 +1,5 @@
-import "./sample.js"
-console.log("hello");
+import menu from "./menu.js";
+
+window.onload = () => {
+  menu()
+}

@@ -174,10 +174,10 @@ function switchPlayer() {
 
 function ruleChecker(firstDice, secondDice, score) {
   if (firstDice + secondDice === 7) return "loseCurrent";
-  if (firstDice + secondDice + score === 100) return "loseTotal";
-  if (firstDice === 1 && secondDice === 1) return "loseTotal";
-  if (firstDice === secondDice) return "isDouble";
-  return "OK";
+  else if (firstDice + secondDice + score === 100) return "loseTotal";
+  else if (firstDice === 1 && secondDice === 1) return "loseTotal";
+  else if (firstDice === secondDice) return "isDouble";
+  else return "OK";
 }
 
 function roll() {
@@ -255,9 +255,7 @@ function performRoll(rollTimes, rollCount) {
 
   keyHold.classList.remove("hidden");
   statusBar(
-    `${
-      activePlayer === 0 ? playerName.textContent : cpuName.textContent
-    }'s turn`
+    `${activePlayer === 0 ? playerName.textContent : cpuName.textContent}'s turn`
   );
   switch (conclusion) {
     case "loseCurrent":

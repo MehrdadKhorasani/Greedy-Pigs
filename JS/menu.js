@@ -1,5 +1,5 @@
 // variables:
-let isMenu = false;
+let playing = false;
 
 //views
 const mainMenu = document.querySelector(".main_menu");
@@ -12,7 +12,7 @@ const menuTwo = document.getElementById("menu-item-two");
 const menuInstruct = document.getElementById("menu-item-ins");
 
 export default function () {
-  isMenu = true;
+  playing = true;
 
 
 }
@@ -21,22 +21,42 @@ function activeTab() {
   return menuCpu.classList.contains('active-item') ? 'cpu' : menuTwo.classList.contains('active-item') ? 'two_player' : 'instruct'
 }
 
-document.addEventListener('keydown', function (e) {
+!playing && document.addEventListener('keydown', function (e) {
   let key = '';
   const active_tab = activeTab();
   if (e.key === 'ArrowDown') key = 'down';
   else if (e.key === 'ArrowUp') key = 'up';
   else if (e.key === 'Enter') key = 'enter';
   else return;
-  console.log('ss')
-
   menuFunction(key, active_tab);
 })
 
 function menuFunction(keydown, active_tab) {
-  switch (keydown, active_tab) {
-    case 'down' && 'cpu':
-      menuTwo.classList.add('active-item')
-      break
+  if (keydown === 'down') {
+    if (active_tab === 'cpu') {
+      menuTwo.classList.add('active-item');
+      menuCpu.classList.remove('active-item');
+      menuInstruct.classList.remove('active-item');
+    }
+    else if (active_tab === 'two_player') {
+      menuInstruct.classList.add('active-item');
+      menuTwo.classList.remove('active-item');
+      menuCpu.classList.remove('active-item');
+    }
+  } else if (keydown === 'up') {
+    if (active_tab === 'two_player') {
+      menuCpu.classList.add('active-item');
+      menuInstruct.classList.remove('active-item');
+      menuTwo.classList.remove('active-item');
+    }
+    if (active_tab === 'instruct') {
+      menuTwo.classList.add('active-item');
+      menuCpu.classList.remove('active-item');
+      menuInstruct.classList.remove('active-item');
+    }
+  } else if (keydown === 'enter') {
+    console.log(active_tab);
+  } else {
+    return;
   }
 }

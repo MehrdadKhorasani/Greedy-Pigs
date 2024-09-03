@@ -1,62 +1,77 @@
-// variables:
+/*
+Module Name: menu.js
+
+Purpose: Handle all the logic related to menu navigation, including responding to user inputs for menu item selection and initiating the game or instruction view.
+
+Functions:
+initMenuNavigation()
+handleMenuSelection()
+startGame()
+startInstruction()
+
+Dependencies: Will import views.js to manage the UI transitions.
+
+*/
+
+// menu.js
+
+import {
+  showMenuView,
+  showGameView,
+  showInstructionView,
+  setActiveMenuItem,
+  getActiveMenuItem,
+  menuCpu,
+  menuTwo,
+  menuInstruct
+} from './views.js';
+
+import { initGame } from './game.js';
+
 let playing = false;
+let singleMode = false;
 
-//views
-const mainMenu = document.querySelector(".main_menu");
-const gameView = document.querySelector(".main-game");
-const instructView = document.querySelector(".main-instruction");
-
-// Menu Options
-const menuCpu = document.getElementById("menu-item-cpu");
-const menuTwo = document.getElementById("menu-item-two");
-const menuInstruct = document.getElementById("menu-item-ins");
-
-export default function () {
-  playing = true;
-
-
+export function initMenuNavigation() {
+  document.addEventListener("keydown", handleMenuSelection);
 }
 
-function activeTab() {
-  return menuCpu.classList.contains('active-item') ? 'cpu' : menuTwo.classList.contains('active-item') ? 'two_player' : 'instruct'
-}
+function handleMenuSelection(e) {
+  if (playing) return;
 
-!playing && document.addEventListener('keydown', function (e) {
-  let key = '';
-  const active_tab = activeTab();
-  if (e.key === 'ArrowDown') key = 'down';
-  else if (e.key === 'ArrowUp') key = 'up';
-  else if (e.key === 'Enter') key = 'enter';
-  else return;
-  menuFunction(key, active_tab);
-})
+  const activeMenuItem = getActiveMenuItem();
 
-function menuFunction(keydown, active_tab) {
-  if (keydown === 'down') {
-    if (active_tab === 'cpu') {
-      menuTwo.classList.add('active-item');
-      menuCpu.classList.remove('active-item');
-      menuInstruct.classList.remove('active-item');
+  if (e.key === "ArrowDown") {
+    if (activeMenuItem === "cpu") {
+      setActiveMenuItem(menuTwo);
+    } else if (activeMenuItem === "two_player") {
+      setActiveMenuItem(menuInstruct);
     }
-    else if (active_tab === 'two_player') {
-      menuInstruct.classList.add('active-item');
-      menuTwo.classList.remove('active-item');
-      menuCpu.classList.remove('active-item');
+  } else if (e.key === "ArrowUp") {
+    if (activeMenuItem === "two_player") {
+      setActiveMenuItem(menuCpu);
+    } else if (activeMenuItem === "instruct") {
+      setActiveMenuItem(menuTwo);
     }
-  } else if (keydown === 'up') {
-    if (active_tab === 'two_player') {
-      menuCpu.classList.add('active-item');
-      menuInstruct.classList.remove('active-item');
-      menuTwo.classList.remove('active-item');
+  } else if (e.key === "Enter") {
+    if (activeMenuItem === "cpu") {
+      singleMode = true;
+      startGame();
+    } else if (activeMenuItem === "two_player") {
+      singleMode = false;
+      startGame();
+    } else if (activeMenuItem === "instruct") {
+      startInstruction();
     }
-    if (active_tab === 'instruct') {
-      menuTwo.classList.add('active-item');
-      menuCpu.classList.remove('active-item');
-      menuInstruct.classList.remove('active-item');
-    }
-  } else if (keydown === 'enter') {
-    console.log(active_tab);
-  } else {
-    return;
   }
+}
+
+function startGame() {
+  playing = true;
+  showGameView();
+  initGame(singleMode);
+}
+
+function startInstruction() {
+  playing = true;
+  showInstructionView();
 }

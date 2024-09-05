@@ -1,25 +1,25 @@
 const state = {
   scores: [0, 0],
-  currents: [0, 0],
+  current_score: 0,
   last_rolls: [false, false],
-  active_player: 0,
 }
 
 let playing = true;
-
+let active_player = 0;
+let single_mode = false;
+let is_double = false;
 
 function init() {
   state.scores = [0, 0];
-  state.currents = [0, 0];
+  state.current_score = 0;
   state.last_rolls = [false, false];
-  state.active_player = 0
+  active_player = 0
   playing = true;
 }
 
-const change_turn = () => state.active_player = state.active_player === 0 ? 1 : 0;
+const changeTurn = () => active_player = active_player === 0 ? 1 : 0;
 
-function keypress_handler(key) {
-
+function keyHandler(key) {
   switch (key) {
     case 'r':
       roll();
@@ -29,6 +29,9 @@ function keypress_handler(key) {
       break;
     case 'n':
       // new Game
+      console.log('new game');
+      init();
+      // stop all the current functionality.
       break;
     case 'Escape':
       break;
@@ -38,75 +41,59 @@ function keypress_handler(key) {
 }
 
 function startGame() {
-
   if (playing === true) {
-    keypress_handler('r')
+    keyHandler('r')
+    console.log(state.last_rolls)
   }
-
-
 }
 
 function roll() {
-  const { firstNumber: num1, secondNumber: num2 } = random_dice();
-  console.log(num1, num2);
+  const { firstNumber: num1, secondNumber: num2 } = randomDice();
 
-  const result = rull_checker(num1, num2);
-
-  if (result === 'ok') {
-    state.currents[state.active_player] += Number(num1 + num2);
-  }
+  const result = rullChecker(num1, num2);
 
   if (result === 'double') {
-    state.currents[state.active_player] += Number(num1 + num2);
+    state.current_score += Number(num1 + num2);
+    double()
     // MUST Continue
+  } else {
+    is_double = false;
+    state.last_rolls.push(false);
+    state.last_rolls.shift();
+
+    if (result === 'lose_turn') loseTurn();
+    if (result === 'lose_scores') loseAll();
+    if (result === 'ok') state.current_score += Number(num1 + num2);
   }
-
-  if (result === 'lose_turn') {
-    state.currents[state.active_player] = 0;
-    console.log(state.active_player)
-    change_turn()
-  }
-
-  if (result === 'lose_scores') {
-
-    state.scores[active_player] = 0;
-
-    state.currents[state.active_player] = 0;
-    console.log(state.active_player)
-    change_turn()
-    // or call lose_turn() to prevent dry principle
-
-  }
-
-  console.log(result)
-  console.log(state.active_player)
-
-  if (result === 'double') is_double()
 }
 
 function hold() {
-  state.scores[active_player] = state.currents[active_player];
-  state.currents[active_player] = 0;
-  state.active_player = state.active_player === 0 ? 1 : 0;
+  if (!is_double) {
+    state.scores[active_player] += state.current_score;
+    state.current_score = 0;
+    active_player = active_player === 0 ? 1 : 0;
+  }
 }
 
-function random_dice() {
+function randomDice() {
   const firstNumber = Math.ceil(Math.random() * 6);
   const secondNumber = Math.ceil(Math.random() * 6);
   return { firstNumber, secondNumber };
 }
 
-function rull_checker(num1, num2) {
-  if (num1 === num2) return 'double';
+function rullChecker(num1, num2) {
+  if (num1 === num2 && num1 !== 1) return 'double';
   if (num1 + num2 === 7) return 'lose_turn';
   if (num1 === 1 && num2 === 1) return 'lose_scores';
   return 'ok'
 }
 
-function is_double() {
+function double() {
+  is_double = true;
   const double_count = state.last_rolls.filter(value => value === true).length;
   if (double_count === 2) {
     state.last_rolls.splice(0, state.last_rolls.length, false, false)
+    // lose all
     return;
   }
   state.last_rolls.push(true);
@@ -116,17 +103,37 @@ function is_double() {
   roll()
 
 }
+
+function loseTurn() {
+  state.current_score = 0;
+  changeTurn()
+}
+
+function loseAll() {
+  state.scores[active_player] = 0;
+  loseTurn()
+}
+
+
 startGame();
 
-function check_winner() {
-  if (state.scores[state.active_player] > 100) {
-    console.log("we've got a Winner.")
+function checkWinner() {
+  if (state.scores[active_player] > 100) {
+    endGame()
   }
 
   //move this functionality to roll function:
-  if (state.scores[state.active_player] + state.currents[state.active_player] === 100) {
+  if (state.scores[active_player] + state.current_score === 100) {
     // Remember: after every roll, the current score updated (if the status == ok), after that the condition must be checked.
     // if the condition checked before that, the current score is not correct
     // LOSE ALL
   }
+}
+
+function endGame() {
+  playing = false;
+  console.log("we've got a Winner.")
+}
+
+function updateUI({ data }) {
 }

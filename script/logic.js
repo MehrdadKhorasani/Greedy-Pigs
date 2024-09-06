@@ -1,23 +1,3 @@
-const state = {
-  scores: [0, 0],
-  current_score: 0,
-  last_rolls: [false, false],
-}
-
-let playing = true;
-let active_player = 0;
-let single_mode = false;
-let is_double = false;
-
-function init() {
-  state.scores = [0, 0];
-  state.current_score = 0;
-  state.last_rolls = [false, false];
-  active_player = 0
-  playing = true;
-}
-
-const changeTurn = () => active_player = active_player === 0 ? 1 : 0;
 
 function keyHandler(key) {
   switch (key) {

@@ -1,5 +1,5 @@
 import { menu_view } from './menu_UI.js'
-import { single_mode } from './game.js';
+import { single_mode, active_player, state } from './game.js';
 // View:
 export const game_view = document.querySelector('.main-game');
 
@@ -26,6 +26,9 @@ const keyHold = document.querySelector(".key--hold");
 export function initGameUI() {
   menu_view.classList.add("hiddenView");
   game_view.classList.remove("hiddenView");
+
+  playerName.classList.add("active");
+  cpuName.classList.remove("active");
 
   score0.textContent = score1.textContent = current0.textContent = current1.textContent = 0;
   statusMessage();
@@ -55,4 +58,53 @@ function statusMessage(message = "Roll the Dices to start !!") {
       text = message;
   }
   gameStatus.textContent = text;
+}
+
+
+
+//// UI
+export function switchPlayerUI() {
+  if (!active_player) {
+    playerName.classList.add("active");
+    cpuName.classList.remove("active");
+  }
+  else {
+    cpuName.classList.add("active");
+    playerName.classList.remove("active");
+  }
+
+
+}
+function loadingUI() {
+  loader.classList.remove('hidden');
+  dices.classList.add('hidden');
+  // loader.classList.add('active');
+}
+function showDiceUI(num1, num2) {
+  dice0.src = `img/dice-${num1}.png`;
+  dice1.src = `img/dice-${num2}.png`;
+  dices.classList.remove('hidden');
+  loader.classList.add('hidden');
+  loader.classList.remove('active');
+}
+
+export function rollUI(num1, num2) {
+  loadingUI()
+  showDiceUI(num1, num2)
+  const player = active_player ? current1 : current0
+  player.textContent = state.current_score;
+  console.log(state.current_score)
+}
+
+export function holdUI() {
+  const player = active_player ? score1 : score0
+  const playerCur = active_player ? current1 : current0
+  player.textContent = state.scores[active_player];
+  playerCur.textContent = 0;
+  console.log(state)
+}
+
+export function loseAllUI() {
+  const player = active_player ? score1 : score0
+  player.textContent = state.scores[active_player];
 }

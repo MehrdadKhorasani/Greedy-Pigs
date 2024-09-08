@@ -75,9 +75,9 @@ export function switchPlayerUI() {
 
 
 }
-function loadingUI() {
-  loader.classList.remove('hidden');
+export function loadingUI() {
   dices.classList.add('hidden');
+  loader.classList.remove('hidden');
   // loader.classList.add('active');
 }
 function showDiceUI(num1, num2) {
@@ -89,7 +89,8 @@ function showDiceUI(num1, num2) {
 }
 
 export function rollUI(num1, num2) {
-  loadingUI()
+  dices.classList.remove('hidden');
+  loader.classList.add('hidden');
   showDiceUI(num1, num2)
   const player = active_player ? current1 : current0
   player.textContent = state.current_score;

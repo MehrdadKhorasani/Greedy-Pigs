@@ -1,4 +1,4 @@
-import { game_view, initGameUI, rollUI, holdUI, switchPlayerUI, loseAllUI } from './game_UI.js'
+import { game_view, initGameUI, rollUI, holdUI, switchPlayerUI, loseAllUI, loadingUI } from './game_UI.js'
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
 
 export const state = {
@@ -142,7 +142,8 @@ function roll() {
     if (result === 'lose_scores') loseAll(num1, num2);
     if (result === 'ok') {
       addCurrentScore(num1, num2);
-      rollUI(num1, num2)
+      loading(); // loading state
+      setTimeout(() => rollUI(num1, num2), 1000)
     }
   }
 }
@@ -176,6 +177,7 @@ function endGame() {
   console.log("we've got a Winner.")
 }
 
-
-// // update UI
-// updateUI({ state })
+function loading() {
+  playing = false;
+  loadingUI();
+}

@@ -33,6 +33,10 @@ export function initGameUI() {
   statusMessage();
   playerName.textContent = 'Player-1';
   cpuName.textContent = single_mode ? 'npc' : 'Player-2';
+
+  dices.classList.add('hidden');
+  dice0.src = "./img/dice-1.png";
+  dice1.src = "./img/dice-1.png";
 }
 
 function statusMessage(message = "Roll the Dices to start !!", player = 0) {
@@ -113,7 +117,6 @@ export function holdUI() {
   const playerCur = active_player ? current1 : current0
   player.textContent = state.scores[active_player];
   playerCur.textContent = 0;
-  statusMessage('hold')
 }
 
 export function loseAllUI() {

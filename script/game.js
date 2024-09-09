@@ -29,24 +29,27 @@ export function gameFunction() {
   document.addEventListener('keydown', keyHandler);
 }
 
-/*function newGame(){
-  initMenu() and other things
-  and stio all the current functionality
-}*/
+function newGame() {
+  initGame();
+  initGameUI();
+  console.log(state)
+}
+
+function exitGame() {
+  initGame();
+  initMenu();
+  document.removeEventListener('keydown', keyHandler);
+}
 
 // fn: handling the key events
 function keyHandler(e) {
   if (game_view.classList.contains('hiddenView')) return;
 
-  if (e.key === 'r') roll()
-  else if (e.key === 'h') hold()
-  else if (e.key === 'n') initMenu()
-  else if (e.key === 'Escape') {
-    initGame();
-    initMenu();
-    document.removeEventListener('keydown', keyHandler);
-  }
-  else console.log("please enter a valid input")
+  if (e.key === 'r') roll();
+  else if (e.key === 'h') hold();
+  else if (e.key === 'n') newGame();
+  else if (e.key === 'Escape') exitGame();
+  else console.log("please enter a valid input");
 }
 
 // fn: roll
@@ -83,9 +86,9 @@ function roll() {
 // fn: hold
 function hold() {
   if (playing && !is_double && state.current_score > 0) {
-    addScore()
-    holdUI()
-    setTimeout(switchPlayer, LOAD_TIME_SEC * 1000);
+    addScore();
+    holdUI();
+    switchPlayer();
   }
 }
 

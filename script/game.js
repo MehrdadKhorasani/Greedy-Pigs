@@ -54,7 +54,6 @@ function keyHandler(e) {
 
 // fn: roll
 function roll() {
-  console.log(state.last_rolls)
   if (!playing) return;
   loading(); // loading state
 
@@ -75,12 +74,12 @@ function roll() {
     if (result === 'lose_scores') loseAll(num1, num2);
     if (result === 'ok') {
       addCurrentScore(num1, num2);
-      setTimeout(() => rollUI(num1, num2), LOAD_TIME_SEC * 1000)
     }
-    setTimeout(() => {
-      if (!playing) playing = true
-    }, LOAD_TIME_SEC * 1000)
   }
+  setTimeout(() => rollUI(num1, num2), LOAD_TIME_SEC * 1000)
+  setTimeout(() => {
+    if (!playing) playing = true
+  }, LOAD_TIME_SEC * 1000)
 }
 
 // fn: hold
@@ -129,9 +128,9 @@ function randomDice() {
 // fn: check the rulls of the game:
 function rullChecker(num1, num2) {
   if (num1 === num2 && num1 !== 1) return 'double';
-  if (num1 + num2 === 7) return 'lose_turn';
-  if (num1 === 1 && num2 === 1) return 'lose_scores';
-  return 'ok'
+  else if (num1 + num2 === 7) return 'lose_turn';
+  else if (num1 === 1 && num2 === 1) return 'lose_scores';
+  else return 'ok'
 }
 
 // player loses the turn
@@ -188,4 +187,5 @@ function endGame() {
 function loading() {
   playing = false;
   loadingUI();
+  console.log("load")
 }

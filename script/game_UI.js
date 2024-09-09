@@ -107,16 +107,16 @@ export function rollUI(num1, num2) {
   loader.classList.add('hidden');
   showDiceUI(num1, num2)
   statusMessage('roll')
-  const player = active_player ? current1 : current0
-  player.textContent = state.current_score;
-  console.log(state.current_score)
+  const player_current_score = active_player ? current1 : current0;
+  player_current_score.textContent = state.current_score;
 }
 
 export function holdUI() {
-  const player = active_player ? score1 : score0
-  const playerCur = active_player ? current1 : current0
-  player.textContent = state.scores[active_player];
-  playerCur.textContent = 0;
+  const player_score = active_player ? score1 : score0
+  const player_current_score = active_player ? current1 : current0;
+
+  player_score.textContent = state.scores[active_player];
+  player_current_score.textContent = 0;
 }
 
 export function loseAllUI() {

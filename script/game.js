@@ -1,4 +1,5 @@
-import { game_view, initGameUI, rollUI, holdUI, switchPlayerUI, loseAllUI, loadingUI } from './game_UI.js'
+import { LOAD_TIME_SEC, WINNING_SCORE } from './config.js';
+import { game_view, initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, loseAllUI, doubleUI } from './game_UI.js'
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
 
 export const state = {
@@ -7,10 +8,10 @@ export const state = {
   last_rolls: [false, false],
 }
 
-let playing = true;
+export let playing = true;
 export let active_player = 0;
 export let single_mode = false;
-let is_double = false;
+export let is_double = false;
 
 // Initialize the game logic
 function initGame() {
@@ -23,17 +24,80 @@ function initGame() {
 }
 
 export function gameFunction() {
-  // if (playing) 
   single_mode = single_player.classList.contains('active-item') ? true : false;
   initGame();
   document.addEventListener('keydown', keyHandler);
 }
 
+/*function newGame(){
+  initMenu() and other things
+  and stio all the current functionality
+}*/
+
+// fn: handling the key events
+function keyHandler(e) {
+  if (game_view.classList.contains('hiddenView')) return;
+
+  if (e.key === 'r') roll()
+  else if (e.key === 'h') hold()
+  else if (e.key === 'n') initMenu()
+  else if (e.key === 'Escape') {
+    initGame();
+    initMenu();
+    document.removeEventListener('keydown', keyHandler);
+  }
+  else console.log("please enter a valid input")
+}
+
+// fn: roll
+function roll() {
+  console.log(state.last_rolls)
+  if (!playing) return;
+  loading(); // loading state
+
+  const { firstNumber: num1, secondNumber: num2 } = randomDice();
+
+  const result = rullChecker(num1, num2);
+
+
+  if (result === 'double') {
+    double(num1, num2);
+  } else {
+    is_double = false;
+    addLastRoll();
+
+    if (result === 'lose_turn') {
+      loseTurn(num1, num2);
+    }
+    if (result === 'lose_scores') loseAll(num1, num2);
+    if (result === 'ok') {
+      addCurrentScore(num1, num2);
+      setTimeout(() => rollUI(num1, num2), LOAD_TIME_SEC * 1000)
+    }
+    setTimeout(() => {
+      if (!playing) playing = true
+    }, LOAD_TIME_SEC * 1000)
+  }
+}
+
+// fn: hold
+function hold() {
+  if (playing && !is_double && state.current_score > 0) {
+    addScore()
+    holdUI()
+    setTimeout(switchPlayer, LOAD_TIME_SEC * 1000);
+  }
+}
+
+
 // fn: Change the player
 function switchPlayer() {
+  playing = false;
   active_player = active_player === 0 ? 1 : 0;
   switchPlayerUI();
+  playing = true;
 }
+
 
 // fn: last roll added to last_rolls array (checking doubles)
 function addLastRoll() {
@@ -84,87 +148,28 @@ function loseAll(num1, num2) {
 // fn: if the players get doubles
 function double(num1, num2) {
   is_double = true;
+
   const double_count = state.last_rolls.filter(value => value === true).length;
   if (double_count === 2) {
     state.last_rolls.splice(0, state.last_rolls.length, false, false)
-    // lose all
-    switchPlayer()
+    loseAll(num1, num2)
     return;
   }
   addCurrentScore(num1, num2);
-  addLastRoll(is_double)
-
-  // delete this:
-  roll()
-}
-
-// fn: handling the key events
-function keyHandler(keydown) {
-  if (game_view.classList.contains('hiddenView')) return;
-  const key = keydown.key;
-  switch (key) {
-    case 'r':
-      roll();
-      break;
-    case 'h':
-      hold();
-      break;
-    case 'n':
-      // new Game
-      console.log('new game');
-      initMenu();
-      // stop all the current functionality.
-      break;
-    case 'Escape':
-      initGame();
-      initMenu();
-      document.removeEventListener('keydown', keyHandler);
-      break;
-    default:
-      console.log("please enter a valid input");
-  }
-}
-
-// fn: roll
-function roll() {
-  const { firstNumber: num1, secondNumber: num2 } = randomDice();
-
-  const result = rullChecker(num1, num2);
-
-  if (result === 'double') {
-    double(num1, num2);
-    // MUST Continue
-  } else {
-    is_double = false;
-    addLastRoll();
-
-    if (result === 'lose_turn') loseTurn(num1, num2);
-    if (result === 'lose_scores') loseAll(num1, num2);
-    if (result === 'ok') {
-      addCurrentScore(num1, num2);
-      loading(); // loading state
-      setTimeout(() => rollUI(num1, num2), 1000)
-    }
-  }
-}
-
-// fn: hold
-function hold() {
-  if (!is_double && state.current_score > 0) {
-    addScore()
-    holdUI()
-    switchPlayer()
-  }
+  addLastRoll(is_double);
+  rollUI(num1, num2);
+  doubleUI()
+  playing = true;
 }
 
 // check if there's a winner
 function checkWinner() {
-  if (state.scores[active_player] > 100) {
+  if (state.scores[active_player] > WINNING_SCORE) {
     endGame()
   }
 
   //move this functionality to roll function:
-  if (state.scores[active_player] + state.current_score === 100) {
+  if (state.scores[active_player] + state.current_score === WINNING_SCORE) {
     // Remember: after every roll, the current score updated (if the status == ok), after that the condition must be checked.
     // if the condition checked before that, the current score is not correct
     // LOSE ALL

@@ -22,7 +22,6 @@ const keyNew = document.querySelector(".key--new");
 const keyRoll = document.querySelector(".key--roll");
 const keyHold = document.querySelector(".key--hold");
 
-
 export function initGameUI() {
   menu_view.classList.add("hiddenView");
   game_view.classList.remove("hiddenView");
@@ -36,7 +35,7 @@ export function initGameUI() {
   cpuName.textContent = single_mode ? 'npc' : 'Player-2';
 }
 
-function statusMessage(message = "Roll the Dices to start !!") {
+function statusMessage(message = "Roll the Dices to start !!", player = 0) {
   let text;
   switch (message) {
     case 'roll':
@@ -44,6 +43,8 @@ function statusMessage(message = "Roll the Dices to start !!") {
       break;
     case 'hold':
       text = 'You holded the score'
+      console.log('kir');
+      break;
     case 'load':
       text = 'Please wait...'
       break;
@@ -52,8 +53,13 @@ function statusMessage(message = "Roll the Dices to start !!") {
       break;
     case 'no-hold':
       text = 'After doubles, you must roll!'
+      break;
+    case 'switch-player':
+      text = `player-${player === 0 ? "1" : "2"} turn`;
+      break;
     case 'win':
       text = 'ss' // check the winner and named it with regex
+      break;
     default:
       text = message;
   }
@@ -67,10 +73,12 @@ export function switchPlayerUI() {
   if (!active_player) {
     playerName.classList.add("active");
     cpuName.classList.remove("active");
+    statusMessage('switch-player', 0);
   }
   else {
     cpuName.classList.add("active");
     playerName.classList.remove("active");
+    statusMessage('switch-player', 1);
   }
 
 
@@ -78,8 +86,9 @@ export function switchPlayerUI() {
 export function loadingUI() {
   dices.classList.add('hidden');
   loader.classList.remove('hidden');
-  // loader.classList.add('active');
+  statusMessage('load');
 }
+
 function showDiceUI(num1, num2) {
   dice0.src = `img/dice-${num1}.png`;
   dice1.src = `img/dice-${num2}.png`;
@@ -89,9 +98,11 @@ function showDiceUI(num1, num2) {
 }
 
 export function rollUI(num1, num2) {
+  if (keyHold.classList.contains('hidden')) keyHold.classList.remove('hidden');
   dices.classList.remove('hidden');
   loader.classList.add('hidden');
   showDiceUI(num1, num2)
+  statusMessage('roll')
   const player = active_player ? current1 : current0
   player.textContent = state.current_score;
   console.log(state.current_score)
@@ -102,10 +113,15 @@ export function holdUI() {
   const playerCur = active_player ? current1 : current0
   player.textContent = state.scores[active_player];
   playerCur.textContent = 0;
-  console.log(state)
+  statusMessage('hold')
 }
 
 export function loseAllUI() {
   const player = active_player ? score1 : score0
   player.textContent = state.scores[active_player];
+}
+
+export function doubleUI() {
+  keyHold.classList.add('hidden');
+  statusMessage('double');
 }

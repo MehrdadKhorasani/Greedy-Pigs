@@ -1,6 +1,8 @@
 import { LOAD_TIME_SEC, WINNING_SCORE } from './config.js';
-import { game_view, initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, loseAllUI, doubleUI } from './game_UI.js'
+import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, loseAllUI, doubleUI } from './game_UI.js'
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
+import { rullChecker } from './game_rules.js';
+import { keyHandler } from './game_handler.js';
 
 export const state = {
   scores: [0, 0],
@@ -29,33 +31,22 @@ export function gameFunction() {
   document.addEventListener('keydown', keyHandler);
 }
 
-function newGame() {
+export function newGame() {
   initGame();
   initGameUI();
   console.log(state)
 }
 
-function exitGame() {
+export function exitGame() {
   initGame();
   initMenu();
   document.removeEventListener('keydown', keyHandler);
 }
 
-// fn: handling the key events
-function keyHandler(e) {
-  if (game_view.classList.contains('hiddenView')) return;
-
-  if (e.key === 'r') roll();
-  else if (e.key === 'h') hold();
-  else if (e.key === 'n') newGame();
-  else if (e.key === 'Escape') exitGame();
-  else console.log("please enter a valid input");
-}
-
 // fn: roll
-function roll() {
+export function roll() {
   if (!playing) return;
-  loading(); // loading state
+  loading();
 
   const { firstNumber: num1, secondNumber: num2 } = randomDice();
 
@@ -76,14 +67,14 @@ function roll() {
       addCurrentScore(num1, num2);
     }
   }
-  setTimeout(() => rollUI(num1, num2), LOAD_TIME_SEC * 1000)
   setTimeout(() => {
+    rollUI(num1, num2);
     if (!playing) playing = true
   }, LOAD_TIME_SEC * 1000)
 }
 
 // fn: hold
-function hold() {
+export function hold() {
   if (playing && !is_double && state.current_score > 0) {
     addScore();
     holdUI();
@@ -123,14 +114,6 @@ function randomDice() {
   const firstNumber = Math.ceil(Math.random() * 6);
   const secondNumber = Math.ceil(Math.random() * 6);
   return { firstNumber, secondNumber };
-}
-
-// fn: check the rulls of the game:
-function rullChecker(num1, num2) {
-  if (num1 === num2 && num1 !== 1) return 'double';
-  else if (num1 + num2 === 7) return 'lose_turn';
-  else if (num1 === 1 && num2 === 1) return 'lose_scores';
-  else return 'ok'
 }
 
 // player loses the turn
@@ -187,5 +170,4 @@ function endGame() {
 function loading() {
   playing = false;
   loadingUI();
-  console.log("load")
 }

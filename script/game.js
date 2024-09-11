@@ -1,8 +1,9 @@
-import { LOAD_TIME_SEC, WINNING_SCORE } from './config.js';
-import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, loseAllUI, doubleUI } from './game_UI.js'
+import { WINNING_SCORE, LOAD_TIME_SEC } from './config.js';
+import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, doubleUI } from './game_UI.js'
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
 import { rullChecker } from './game_rules.js';
 import { keyHandler } from './game_handler.js';
+import { rollOk, loseAll, loseTurn, double } from './game_roll_cons.js';
 
 export const state = {
   scores: [0, 0],
@@ -13,7 +14,7 @@ export const state = {
 export let playing = true;
 export let active_player = 0;
 export let single_mode = false;
-export let is_double = false;
+let is_double = false;
 
 // Initialize the game logic
 function initGame() {
@@ -47,29 +48,19 @@ export function exitGame() {
 export function roll() {
   if (!playing) return;
   loading();
-
   const { firstNumber: num1, secondNumber: num2 } = randomDice();
-
   const result = rullChecker(num1, num2);
 
+  if (result === 'double') double(num1, num2);
+  else if (result === 'lose_turn') loseTurn();
+  else if (result === 'lose_scores') loseAll();
+  else if (result === 'ok') rollOk(num1, num2);
 
-  if (result === 'double') {
-    double(num1, num2);
-  } else {
-    is_double = false;
-    addLastRoll();
-
-    if (result === 'lose_turn') {
-      loseTurn(num1, num2);
-    }
-    if (result === 'lose_scores') loseAll(num1, num2);
-    if (result === 'ok') {
-      addCurrentScore(num1, num2);
-    }
-  }
   setTimeout(() => {
-    rollUI(num1, num2);
-    if (!playing) playing = true
+    rollUI(num1, num2, result);
+    if (!playing) playing = true;
+    if (result === 'double') doubleUI()
+    if (result === 'lose_scores' || result === 'lose_turn') switchPlayer();
   }, LOAD_TIME_SEC * 1000)
 }
 
@@ -93,13 +84,13 @@ function switchPlayer() {
 
 
 // fn: last roll added to last_rolls array (checking doubles)
-function addLastRoll() {
+export function addLastRoll() {
   state.last_rolls.push(is_double);
   state.last_rolls.shift();
 }
 
 // fn: add the roll score to current score
-function addCurrentScore(num1, num2) {
+export function addCurrentScore(num1, num2) {
   state.current_score += Number(num1 + num2);
 }
 
@@ -114,37 +105,6 @@ function randomDice() {
   const firstNumber = Math.ceil(Math.random() * 6);
   const secondNumber = Math.ceil(Math.random() * 6);
   return { firstNumber, secondNumber };
-}
-
-// player loses the turn
-function loseTurn(num1, num2) {
-  state.current_score = 0;
-  rollUI(num1, num2)
-  switchPlayer()
-}
-
-// player loses the turn and all the score
-function loseAll(num1, num2) {
-  state.scores[active_player] = 0;
-  loseAllUI()
-  loseTurn(num1, num2)
-}
-
-// fn: if the players get doubles
-function double(num1, num2) {
-  is_double = true;
-
-  const double_count = state.last_rolls.filter(value => value === true).length;
-  if (double_count === 2) {
-    state.last_rolls.splice(0, state.last_rolls.length, false, false)
-    loseAll(num1, num2)
-    return;
-  }
-  addCurrentScore(num1, num2);
-  addLastRoll(is_double);
-  rollUI(num1, num2);
-  doubleUI()
-  playing = true;
 }
 
 // check if there's a winner
@@ -167,7 +127,11 @@ function endGame() {
   console.log("we've got a Winner.")
 }
 
-function loading() {
+export function loading() {
   playing = false;
   loadingUI();
+}
+
+export function setIsDouble(value) {
+  is_double = value;
 }

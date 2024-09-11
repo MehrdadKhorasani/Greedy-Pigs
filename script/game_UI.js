@@ -101,7 +101,7 @@ function showDiceUI(num1, num2) {
   loader.classList.remove('active');
 }
 
-export function rollUI(num1, num2) {
+export function rollUI(num1, num2, situation) {
   if (keyHold.classList.contains('hidden')) keyHold.classList.remove('hidden');
   dices.classList.remove('hidden');
   loader.classList.add('hidden');
@@ -109,6 +109,11 @@ export function rollUI(num1, num2) {
   statusMessage('roll')
   const player_current_score = active_player ? current1 : current0;
   player_current_score.textContent = state.current_score;
+
+  if (situation === 'lose_scores') {
+    const player = active_player ? score1 : score0
+    player.textContent = state.scores[active_player];
+  }
 }
 
 export function holdUI() {
@@ -117,11 +122,6 @@ export function holdUI() {
 
   player_score.textContent = state.scores[active_player];
   player_current_score.textContent = 0;
-}
-
-export function loseAllUI() {
-  const player = active_player ? score1 : score0
-  player.textContent = state.scores[active_player];
 }
 
 export function doubleUI() {

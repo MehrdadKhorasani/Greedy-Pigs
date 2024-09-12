@@ -37,6 +37,9 @@ export function initGameUI() {
   dices.classList.add('hidden');
   dice0.src = "./img/dice-1.png";
   dice1.src = "./img/dice-1.png";
+
+  keyHold.classList.remove('hidden');
+  keyRoll.classList.remove('hidden');
 }
 
 function statusMessage(message = "Roll the Dices to start !!", player = 0) {
@@ -62,7 +65,7 @@ function statusMessage(message = "Roll the Dices to start !!", player = 0) {
       text = `player-${player === 0 ? "1" : "2"} turn`;
       break;
     case 'win':
-      text = 'ss' // check the winner and named it with regex
+      text = `player-${player === 0 ? "1" : "2"} wins !!`;
       break;
     default:
       text = message;
@@ -127,4 +130,11 @@ export function holdUI() {
 export function doubleUI() {
   keyHold.classList.add('hidden');
   statusMessage('double');
+}
+
+export function endGameUI(winner) {
+  statusMessage('win', winner);
+  keyHold.classList.add('hidden');
+  keyRoll.classList.add('hidden');
+  dices.classList.add('hidden');
 }

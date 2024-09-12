@@ -288,6 +288,10 @@ p > span {
   animation: wink 2s step-start 1s infinite;
 }
 
+.greener {
+  color: var(--color-dos-4);
+}
+
 @keyframes wink {
   50% {
     opacity: 0;

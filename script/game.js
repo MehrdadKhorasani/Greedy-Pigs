@@ -1,5 +1,5 @@
 import { WINNING_SCORE, LOAD_TIME_SEC } from './config.js';
-import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, doubleUI } from './game_UI.js'
+import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, doubleUI, endGameUI } from './game_UI.js'
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
 import { rullChecker } from './game_rules.js';
 import { keyHandler } from './game_handler.js';
@@ -69,7 +69,8 @@ export function hold() {
   if (playing && !is_double && state.current_score > 0) {
     addScore();
     holdUI();
-    switchPlayer();
+    checkWinner();
+    if (playing) switchPlayer();
   }
 }
 
@@ -124,7 +125,7 @@ function checkWinner() {
 // end of the game
 function endGame() {
   playing = false;
-  console.log("we've got a Winner.")
+  endGameUI(active_player);
 }
 
 export function loading() {

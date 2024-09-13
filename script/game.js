@@ -44,6 +44,25 @@ export function exitGame() {
   document.removeEventListener('keydown', keyHandler);
 }
 
+// fn: fake game
+export function fakeGame() {
+  if (!playing) return;
+  loading();
+  const result = rullChecker(4, 4);
+
+  if (result === 'double') double(4, 4);
+  else if (result === 'lose_turn') loseTurn();
+  else if (result === 'lose_scores') loseAll();
+  else if (result === 'ok') rollOk(4, 4);
+
+  setTimeout(() => {
+    rollUI(4, 4, result);
+    if (!playing) playing = true;
+    if (result === 'double') doubleUI()
+    if (result === 'lose_scores' || result === 'lose_turn') switchPlayer();
+  }, LOAD_TIME_SEC * 1000)
+}
+
 // fn: roll
 export function roll() {
   if (!playing) return;

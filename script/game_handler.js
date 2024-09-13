@@ -1,5 +1,5 @@
 import { game_view } from './game_UI.js'
-import { roll, hold, newGame, exitGame } from './game.js';
+import { roll, hold, newGame, exitGame, fakeGame } from './game.js';
 
 // fn: handling the key events
 export function keyHandler(e) {
@@ -9,5 +9,6 @@ export function keyHandler(e) {
   else if (e.key === 'h') hold();
   else if (e.key === 'n') newGame();
   else if (e.key === 'Escape') exitGame();
+  else if (e.key === 'f') fakeGame();
   else console.log("please enter a valid input");
 }

@@ -3,7 +3,7 @@ import { initGameUI, rollUI, holdUI, loadingUI, switchPlayerUI, doubleUI, endGam
 import { menu_item_cpu as single_player, initMenu } from './menu_UI.js';
 import { rullChecker } from './game_rules.js';
 import { keyHandler } from './game_handler.js';
-import { rollOk, loseAll, loseTurn, double } from './game_roll_cons.js';
+import { rollOk, loseAll, loseTurn, double, triple_double } from './game_roll_cons.js';
 
 export const state = {
   scores: [0, 0],
@@ -15,6 +15,7 @@ export let playing = true;
 export let active_player = 0;
 export let single_mode = false;
 let is_double = false;
+let three_double = false;
 
 // Initialize the game logic
 function initGame() {
@@ -44,42 +45,32 @@ export function exitGame() {
   document.removeEventListener('keydown', keyHandler);
 }
 
-// fn: fake game
-export function fakeGame() {
-  if (!playing) return;
-  loading();
-  const result = rullChecker(4, 4);
-
-  if (result === 'double') double(4, 4);
-  else if (result === 'lose_turn') loseTurn();
-  else if (result === 'lose_scores') loseAll();
-  else if (result === 'ok') rollOk(4, 4);
-
-  setTimeout(() => {
-    rollUI(4, 4, result);
-    if (!playing) playing = true;
-    if (result === 'double') doubleUI()
-    if (result === 'lose_scores' || result === 'lose_turn') switchPlayer();
-  }, LOAD_TIME_SEC * 1000)
-}
-
 // fn: roll
 export function roll() {
   if (!playing) return;
   loading();
   const { firstNumber: num1, secondNumber: num2 } = randomDice();
   const result = rullChecker(num1, num2);
+  const double_count = state.last_rolls.filter(value => value === true).length;
 
-  if (result === 'double') double(num1, num2);
-  else if (result === 'lose_turn') loseTurn();
-  else if (result === 'lose_scores') loseAll();
-  else if (result === 'ok') rollOk(num1, num2);
-
+  if (result === 'double' && double_count === 2) {
+    three_double = true;
+    triple_double()
+  } else {
+    if (result === 'double') double(num1, num2);
+    else if (result === 'lose_turn') loseTurn();
+    else if (result === 'lose_scores') loseAll();
+    else if (result === 'ok') rollOk(num1, num2);
+  }
   setTimeout(() => {
     rollUI(num1, num2, result);
     if (!playing) playing = true;
-    if (result === 'double') doubleUI()
+    if (result === 'double' && !three_double) doubleUI()
     if (result === 'lose_scores' || result === 'lose_turn') switchPlayer();
+    if (three_double) {
+      switchPlayer();
+      three_double = false
+    }
   }, LOAD_TIME_SEC * 1000)
 }
 

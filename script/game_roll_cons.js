@@ -16,21 +16,14 @@ export function loseTurn() {
 
 // player loses the turn and all the score (double 1 or 100)
 export function loseAll() {
-  setIsDouble(false);
-  addLastRoll()
+  state.last_rolls.splice(0, state.last_rolls.length, false, false)
   state.scores[active_player] = 0;
-  loseTurn()
+  state.current_score = 0;
 }
 
 // fn: if the players get doubles (except double 1)
 export function double(num1, num2) {
-  setIsDouble(true);
   addCurrentScore(num1, num2);
+  setIsDouble(true);
   addLastRoll();
-}
-
-export function triple_double() {
-  state.last_rolls.splice(0, state.last_rolls.length, false, false)
-  state.scores[active_player] = 0;
-  state.current_score = 0;
 }

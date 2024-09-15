@@ -53,6 +53,7 @@ export function roll() {
   const double_count = state.last_rolls.filter(value => value === true).length;
 
   if (result === 'double' && double_count === 2) result = 'lose_scores';
+  if (state.scores[active_player] + state.current_score === WINNING_SCORE) result = 'lose_scores';
 
   if (result === 'double') double(num1, num2);
   else if (result === 'lose_turn') loseTurn();
@@ -117,13 +118,6 @@ function randomDice() {
 function checkWinner() {
   if (state.scores[active_player] > WINNING_SCORE) {
     endGame()
-  }
-
-  //move this functionality to roll function:
-  if (state.scores[active_player] + state.current_score === WINNING_SCORE) {
-    // Remember: after every roll, the current score updated (if the status == ok), after that the condition must be checked.
-    // if the condition checked before that, the current score is not correct
-    // LOSE ALL
   }
 }
 
